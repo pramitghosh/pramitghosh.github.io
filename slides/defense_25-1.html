@@ -204,8 +204,8 @@
 <li>Assumes no special environment: user writes R code as on his/her local machine except
 
 <ul>
-<li>user needs to write an anonymous R function definition with the incoming <code>stars</code> object as its sole argument at the end of his/her script which acts as a wrapper</li>
-<li>user has to make sure the anonymous function returns a <code>stars</code> object with proper attributes (band names, timestamps etc.)</li>
+<li>user writes an anonymous R function definition with the incoming <code>stars</code> object as its sole argument at the end of his/her script which acts as a wrapper</li>
+<li>this anonymous function returns a <code>stars</code> object with proper attributes</li>
 </ul></li>
 <li>No need for the user to keep track of data&#39;s dimensions</li>
 <li>Currently only supports raster data - the input and the output of the UDF service must be rasters</li>
@@ -218,12 +218,8 @@
 
 <ul>
 <li>lot of freedom to the user</li>
-<li>also a security concern</li>
 </ul></li>
-<li>In principle, possible to upload additional files (e.g. shapefiles, CSVs, executables etc.) accessible to the UDF (not implemented)
-
-<div align="center">
-Practically, it&#39;s a back-end for the processing back-ends!</div></li>
+<li>Possible to download additional data from any online source (implemented) and upload additional files accessible to the UDF (not implemented)</li>
 </ul>
 
 </article></slide><slide class=""><hgroup><h2>Comparison with similar infrastructures</h2></hgroup><article  id="comparison-with-similar-infrastructures" class="smaller ">
@@ -233,36 +229,36 @@ Practically, it&#39;s a back-end for the processing back-ends!</div></li>
 <p><strong>Advantages</strong></p>
 
 <ul>
-<li>Exposes not only an interface, but offers full control over it. GEE offers a sandbox for JavaScript and a Python client library</li>
-<li>Ability to load any R package implies a large number of possibilities
+<li>Exposes not only an interface, but offers full control over it. GEE offers a JS sandbox and a Python client</li>
+<li>Ability to load any R package and data implies a large number of possibilities
 
 <ul>
 <li>running C++ codes</li>
-<li>GEE does not offer such flexibilities (needs more research)</li>
+<li>GEE offers custom data upload but functionally does not offer such flexibilities (?)</li>
 </ul></li>
-<li>Web-based RESTful implementation using generic GeoTIFFs, base64 encoded strings and JSON: could be used by almost any back-end!</li>
+<li>RESTful implementation uses generic formats and technologies: GeoTIFFs, base64 encoding and JSON</li>
 </ul>
 
 <p><strong>Disadvantages</strong></p>
 
 <ul>
-<li>Current implementation not scalable - does not make special considerations for big data. GEE is designed to be scalable and hence supports handling larger data volumes
+<li>Current implementation not scalable. GEE is designed to be scalable and hence supports handling larger data volumes
 
 <ul>
-<li>Better implemented by the back-ends. Example: chunking data before sending to UDF service</li>
+<li>Better implemented by the back-ends. (e.g. chunking data before sending to UDF service)</li>
 </ul></li>
 <li>No native support of data other than rasters (e.g. CSVs, vector data etc.)</li>
 <li>No interactive experience for the user (yet)
 
 <ul>
-<li>Not required for openEO UDFs since the <em>user</em> is the back-end itself</li>
+<li>But possible in the light of new development in <code>stars</code></li>
 </ul></li>
 </ul>
 
 </article></slide><slide class=""><hgroup><h2>Conclusion</h2></hgroup><article  id="conclusion" class="smaller ">
 
 <ul>
-<li><p>Proof of Concept R UDF service proves the possibility to develop infrastructure to run users&#39; custom R functions on EO data in the cloud</p></li>
+<li><p>The R UDF service proves the possibility to develop infrastructure to run users&#39; custom R functions on EO data in the cloud</p></li>
 <li><strong>Practically useful</strong>
 
 <ul>
