@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="&lt;Pramit Ghosh | Uni Münster&gt;" />
+  <title>Running user-defined functions in R on EO data in cloud back-ends</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="index_files/reveal.js-3.3.0.1/css/reveal.css"/>
+
+
+
+<link rel="stylesheet" href="index_files/reveal.js-3.3.0.1/css/theme/white.css" id="theme">
+
+
+  <!-- some tweaks to reveal css -->
+  <style type="text/css">
+    .reveal h1 { font-size: 2.0em; }
+    .reveal h2 { font-size: 1.5em;  }
+    .reveal h3 { font-size: 1.25em;	}
+    .reveal h4 { font-size: 1em;	}
+
+    .reveal .slides>section,
+    .reveal .slides>section>section {
+      padding: 0px 0px;
+    }
+
+
+
+    .reveal table {
+      border-width: 1px;
+      border-spacing: 2px;
+      border-style: dotted;
+      border-color: gray;
+      border-collapse: collapse;
+      font-size: 0.7em;
+    }
+
+    .reveal table th {
+      border-width: 1px;
+      padding-left: 10px;
+      padding-right: 25px;
+      font-weight: bold;
+      border-style: dotted;
+      border-color: gray;
+    }
+
+    .reveal table td {
+      border-width: 1px;
+      padding-left: 10px;
+      padding-right: 25px;
+      border-style: dotted;
+      border-color: gray;
+    }
+
+
+  </style>
+
+    <style type="text/css">code{white-space: pre;}</style>
+
+
+<!-- Printing and PDF exports -->
+<script id="paper-css" type="application/dynamic-css">
+
+/* Default Print Stylesheet Template
+   by Rob Glazebrook of CSSnewbie.com
+   Last Updated: June 4, 2008
+
+   Feel free (nay, compelled) to edit, append, and
+   manipulate this file as you see fit. */
+
+
+@media print {
+
+	/* SECTION 1: Set default width, margin, float, and
+	   background. This prevents elements from extending
+	   beyond the edge of the printed page, and prevents
+	   unnecessary background images from printing */
+	html {
+		background: #fff;
+		width: auto;
+		height: auto;
+		overflow: visible;
+	}
+	body {
+		background: #fff;
+		font-size: 20pt;
+		width: auto;
+		height: auto;
+		border: 0;
+		margin: 0 5%;
+		padding: 0;
+		overflow: visible;
+		float: none !important;
+	}
+
+	/* SECTION 2: Remove any elements not needed in print.
+	   This would include navigation, ads, sidebars, etc. */
+	.nestedarrow,
+	.controls,
+	.fork-reveal,
+	.share-reveal,
+	.state-background,
+	.reveal .progress,
+	.reveal .backgrounds {
+		display: none !important;
+	}
+
+	/* SECTION 3: Set body font face, size, and color.
+	   Consider using a serif font for readability. */
+	body, p, td, li, div {
+		font-size: 20pt!important;
+		font-family: Georgia, "Times New Roman", Times, serif !important;
+		color: #000;
+	}
+
+	/* SECTION 4: Set heading font face, sizes, and color.
+	   Differentiate your headings from your body text.
+	   Perhaps use a large sans-serif for distinction. */
+	h1,h2,h3,h4,h5,h6 {
+		color: #000!important;
+		height: auto;
+		line-height: normal;
+		font-family: Georgia, "Times New Roman", Times, serif !important;
+		text-shadow: 0 0 0 #000 !important;
+		text-align: left;
+		letter-spacing: normal;
+	}
+	/* Need to reduce the size of the fonts for printing */
+	h1 { font-size: 28pt !important;  }
+	h2 { font-size: 24pt !important; }
+	h3 { font-size: 22pt !important; }
+	h4 { font-size: 22pt !important; font-variant: small-caps; }
+	h5 { font-size: 21pt !important; }
+	h6 { font-size: 20pt !important; font-style: italic; }
+
+	/* SECTION 5: Make hyperlinks more usable.
+	   Ensure links are underlined, and consider appending
+	   the URL to the end of the link for usability. */
+	a:link,
+	a:visited {
+		color: #000 !important;
+		font-weight: bold;
+		text-decoration: underline;
+	}
+	/*
+	.reveal a:link:after,
+	.reveal a:visited:after {
+		content: " (" attr(href) ") ";
+		color: #222 !important;
+		font-size: 90%;
+	}
+	*/
+
+
+	/* SECTION 6: more reveal.js specific additions by @skypanther */
+	ul, ol, div, p {
+		visibility: visible;
+		position: static;
+		width: auto;
+		height: auto;
+		display: block;
+		overflow: visible;
+		margin: 0;
+		text-align: left !important;
+	}
+	.reveal pre,
+	.reveal table {
+		margin-left: 0;
+		margin-right: 0;
+	}
+	.reveal pre code {
+		padding: 20px;
+		border: 1px solid #ddd;
+	}
+	.reveal blockquote {
+		margin: 20px 0;
+	}
+	.reveal .slides {
+		position: static !important;
+		width: auto !important;
+		height: auto !important;
+
+		left: 0 !important;
+		top: 0 !important;
+		margin-left: 0 !important;
+		margin-top: 0 !important;
+		padding: 0 !important;
+		zoom: 1 !important;
+
+		overflow: visible !important;
+		display: block !important;
+
+		text-align: left !important;
+		-webkit-perspective: none;
+		   -moz-perspective: none;
+		    -ms-perspective: none;
+		        perspective: none;
+
+		-webkit-perspective-origin: 50% 50%;
+		   -moz-perspective-origin: 50% 50%;
+		    -ms-perspective-origin: 50% 50%;
+		        perspective-origin: 50% 50%;
+	}
+	.reveal .slides section {
+		visibility: visible !important;
+		position: static !important;
+		width: auto !important;
+		height: auto !important;
+		display: block !important;
+		overflow: visible !important;
+
+		left: 0 !important;
+		top: 0 !important;
+		margin-left: 0 !important;
+		margin-top: 0 !important;
+		padding: 60px 20px !important;
+		z-index: auto !important;
+
+		opacity: 1 !important;
+
+		page-break-after: always !important;
+
+		-webkit-transform-style: flat !important;
+		   -moz-transform-style: flat !important;
+		    -ms-transform-style: flat !important;
+		        transform-style: flat !important;
+
+		-webkit-transform: none !important;
+		   -moz-transform: none !important;
+		    -ms-transform: none !important;
+		        transform: none !important;
+
+		-webkit-transition: none !important;
+		   -moz-transition: none !important;
+		    -ms-transition: none !important;
+		        transition: none !important;
+	}
+	.reveal .slides section.stack {
+		padding: 0 !important;
+	}
+	.reveal section:last-of-type {
+		page-break-after: avoid !important;
+	}
+	.reveal section .fragment {
+		opacity: 1 !important;
+		visibility: visible !important;
+
+		-webkit-transform: none !important;
+		   -moz-transform: none !important;
+		    -ms-transform: none !important;
+		        transform: none !important;
+	}
+	.reveal section img {
+		display: block;
+		margin: 15px 0px;
+		background: rgba(255,255,255,1);
+		border: 1px solid #666;
+		box-shadow: none;
+	}
+
+	.reveal section small {
+		font-size: 0.8em;
+	}
+
+}  
+</script>
+
+
+<script id="pdf-css" type="application/dynamic-css">
+    
+/**
+ * This stylesheet is used to print reveal.js
+ * presentations to PDF.
+ *
+ * https://github.com/hakimel/reveal.js#pdf-export
+ */
+
+* {
+	-webkit-print-color-adjust: exact;
+}
+
+body {
+	margin: 0 auto !important;
+	border: 0;
+	padding: 0;
+	float: none !important;
+	overflow: visible;
+}
+
+html {
+	width: 100%;
+	height: 100%;
+	overflow: visible;
+}
+
+/* Remove any elements not needed in print. */
+.nestedarrow,
+.reveal .controls,
+.reveal .progress,
+.reveal .playback,
+.reveal.overview,
+.fork-reveal,
+.share-reveal,
+.state-background {
+	display: none !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	text-shadow: 0 0 0 #000 !important;
+}
+
+.reveal pre code {
+	overflow: hidden !important;
+	font-family: Courier, 'Courier New', monospace !important;
+}
+
+ul, ol, div, p {
+	visibility: visible;
+	position: static;
+	width: auto;
+	height: auto;
+	display: block;
+	overflow: visible;
+	margin: auto;
+}
+.reveal {
+	width: auto !important;
+	height: auto !important;
+	overflow: hidden !important;
+}
+.reveal .slides {
+	position: static;
+	width: 100%;
+	height: auto;
+
+	left: auto;
+	top: auto;
+	margin: 0 !important;
+	padding: 0 !important;
+
+	overflow: visible;
+	display: block;
+
+	-webkit-perspective: none;
+	   -moz-perspective: none;
+	    -ms-perspective: none;
+	        perspective: none;
+
+	-webkit-perspective-origin: 50% 50%; /* there isn't a none/auto value but 50-50 is the default */
+	   -moz-perspective-origin: 50% 50%;
+	    -ms-perspective-origin: 50% 50%;
+	        perspective-origin: 50% 50%;
+}
+
+.reveal .slides section {
+	page-break-after: always !important;
+
+	visibility: visible !important;
+	position: relative !important;
+	display: block !important;
+	position: relative !important;
+
+	margin: 0 !important;
+	padding: 0 !important;
+	box-sizing: border-box !important;
+	min-height: 1px;
+
+	opacity: 1 !important;
+
+	-webkit-transform-style: flat !important;
+	   -moz-transform-style: flat !important;
+	    -ms-transform-style: flat !important;
+	        transform-style: flat !important;
+
+	-webkit-transform: none !important;
+	   -moz-transform: none !important;
+	    -ms-transform: none !important;
+	        transform: none !important;
+}
+
+.reveal section.stack {
+	margin: 0 !important;
+	padding: 0 !important;
+	page-break-after: avoid !important;
+	height: auto !important;
+	min-height: auto !important;
+}
+
+.reveal img {
+	box-shadow: none;
+}
+
+.reveal .roll {
+	overflow: visible;
+	line-height: 1em;
+}
+
+/* Slide backgrounds are placed inside of their slide when exporting to PDF */
+.reveal section .slide-background {
+	display: block !important;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: -1;
+}
+
+/* All elements should be above the slide-background */
+.reveal section>* {
+	position: relative;
+	z-index: 1;
+}
+
+/* Display slide speaker notes when 'showNotes' is enabled */
+.reveal .speaker-notes-pdf {
+	display: block;
+	width: 100%;
+	max-height: none;
+	left: auto;
+	top: auto;
+	z-index: 100;
+}
+
+/* Display slide numbers when 'slideNumber' is enabled */
+.reveal .slide-number-pdf {
+	display: block;
+	position: absolute;
+	font-size: 14px;
+}
+
+</script>
+
+
+<script>
+var style = document.createElement( 'style' );
+style.type = 'text/css';
+var style_script_id = window.location.search.match( /print-pdf/gi ) ? 'pdf-css' : 'paper-css';
+var style_script = document.getElementById(style_script_id).text;
+style.innerHTML = style_script;
+document.getElementsByTagName('head')[0].appendChild(style);
+</script>
+
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section>
+    <h1 class="title">Running user-defined functions in R on EO data in cloud back-ends</h1>
+    <h2 class="author">&lt;Pramit Ghosh | Uni Münster&gt;</h2>
+    <h3 class="date">July 4, 2019 | FZ Jülich</h3>
+</section>
+
+<section id="traditional-eo-data-processing" class="title-slide slide level1"><h1>Traditional EO data processing</h1><ul>
+<li class="fragment">Requires data to be present locally</li>
+<li class="fragment">Bottleneck for processing large data volumes
+<ul>
+<li class="fragment">Bandwidth</li>
+<li class="fragment">Computing power</li>
+</ul></li>
+<li class="fragment">Cloud-based processing seems the most promising solution
+<ul>
+<li class="fragment">Moving code to data is easier than the other way around</li>
+</ul></li>
+<li class="fragment">openEO aims to develop a mediating API comprehendible to compliant back-ends and clients</li>
+</ul></section>
+<section id="user-defined-functions-udf" class="title-slide slide level1"><h1>User-defined Functions (UDF)</h1><p>A UDF service allows users to run their own code instead of only those provided by the back-ends <img class = "plain" src = "openeo_github.png"></p></section>
+<section id="but" class="title-slide slide level1"><h1>But…</h1><ul>
+<li class="fragment">How usable would such a service be for practical purposes from the PoV of users?
+<ul>
+<li class="fragment">Intended users: geographers, ecologists, modellers etc. who wish to run their code on EO data</li>
+</ul></li>
+<li class="fragment">Is it possible to improve upon the capabilities offered by existing state-of-the-art infrastructures such as Google Earth Engine (GEE)?</li>
+</ul></section>
+<section><section id="overview-of-methodology" class="title-slide slide level1"><h1>Overview of methodology</h1><ul>
+<li class="fragment">Prototypical R package <code>openEO.R.UDF</code> (Ghosh and Lahn, 2019) exploring 3 strategies for an UDF service
+<ul>
+<li class="fragment">File-based service</li>
+<li class="fragment">RESTful service with EO data as JSON arrays</li>
+<li class="fragment">RESTful service with EO data as base64-encoded strings</li>
+</ul></li>
+<li class="fragment">Evaluated the strategies through quantitative experiments and qualitative study</li>
+<li class="fragment">The best strategy (using base64-encoded string) was compared with GEE with respect to usability and functionality</li>
+</ul></section><section id="udf-service-implementation" class="slide level2">
+<h2>UDF service implementation</h2>
+<p>Using <code>stars</code> (Pebesma, 2018) <img class = "plain" src = "strategy_3.png" width = "75%"></p>
+</section></section>
+<section id="results" class="title-slide slide level1"><h1>Results</h1><ul>
+<li class="fragment">Implementation using base64-encoded strings offers faster results than other strategies for a variety of operations <img class = "plain" src = "s3.png"> <small>Experiments performed on 300px*300px subsets of Sentinel-2 time-series with 3 time-steps</small></li>
+</ul></section>
+<section id="advantages-over-gee-usability" class="title-slide slide level1"><h1>Advantages over GEE: Usability</h1><ul>
+<li class="fragment">R coding style need not be adapted for execution in the cloud
+<ul>
+<li class="fragment">Users do not need to change the code written for their local machine drastically</li>
+<li class="fragment">No distinction between client- and server-side objects (Gorelick et al., 2017)</li>
+</ul></li>
+<li class="fragment">Open source HTTP-based interface with language-agnostic open-source technologies
+<ul>
+<li class="fragment">No language-specific clients to interact with the back-end (e.g. JS, Python in GEE)</li>
+<li class="fragment">Smooth learning curve for users</li>
+</ul></li>
+</ul></section>
+<section id="advantages-over-gee-functionality" class="title-slide slide level1"><h1>Advantages over GEE: Functionality</h1><ul>
+<li class="fragment">Download, install and use external libraries (R packages) at run-time from CRAN, Github etc.
+<ul>
+<li class="fragment">Users not limited to pre-defined functionality</li>
+</ul></li>
+<li class="fragment">Support for external data in a variety of formats
+<ul>
+<li class="fragment">Possible for users to send supplementary data to the web-service</li>
+</ul></li>
+<li class="fragment">External processing support
+<ul>
+<li class="fragment">Users can query external processing services (e.g. WPS) over the internet as a part of their UDFs</li>
+</ul></li>
+</ul></section>
+<section id="limitations-and-future-directions" class="title-slide slide level1"><h1>Limitations and Future directions</h1><ul>
+<li class="fragment">Functionalities are at the expense of crucial limitations
+<ul>
+<li class="fragment">Scalability</li>
+<li class="fragment">Security</li>
+<li class="fragment">Fault tolerance</li>
+</ul></li>
+<li class="fragment">Possible to overcome these without compromising the advantages</li>
+<li class="fragment">Future directions
+<ul>
+<li class="fragment">Parallelization of execution by suitably chunking EO data</li>
+<li class="fragment">UDF archive for modular code compatible with multiple back-ends</li>
+</ul></li>
+</ul></section>
+<section id="conclusion" class="title-slide slide level1"><h1>Conclusion</h1><ul>
+<li class="fragment">A language-agnostic web-based UDF service could be implemented using open-source and generic technologies in a way that is practically usable by users
+<ul>
+<li class="fragment">particularly in the context of the openEO project</li>
+</ul></li>
+<li class="fragment">There is room to improve upon existing state-of-the-art infrastructures, such as GEE, and offer additional functionalities
+<ul>
+<li class="fragment">requires more research to overcome limitations</li>
+</ul></li>
+</ul></section>
+<section id="acknowledgements" class="title-slide slide level1"><h1>Acknowledgements</h1><p><img class = "plain" src = "openeo_logo.png"> <img class = "plain" src = "openEO_consortium.JPG"></p></section>
+<section id="references" class="title-slide slide level1"><h1>References</h1><ul>
+<li class="fragment"><p><small><strong>Pramit Ghosh</strong> and Florian Lahn. openEO.R.UDF: User-defined functions (UDF) in R on Earth observation data in cloud back-ends, 2019. URL <a href="https://github.com/Open-EO/openeo-r-udf" class="uri">https://github.com/Open-EO/openeo-r-udf</a>. R package version 0.1. Homepage <a href="https://open-eo.github.io/openeo-r-udf/" class="uri">https://open-eo.github.io/openeo-r-udf/</a></small></p></li>
+<li class="fragment"><p><small>Noel Gorelick, Matt Hancher, Mike Dixon, Simon Ilyushchenko, David Thau, and Rebecca Moore. Google Earth Engine: Planetary-scale geospatial analysis for everyone. Remote Sensing of Environment, 202:18–27, 2017. doi: <a href="https://doi.org/10.1016/j.rse.2017.06.031">10.1016/j.rse.2017.06.031</a>.</small></p></li>
+<li class="fragment"><p><small>Edzer Pebesma. stars: Scalable, Spatiotemporal Tidy Arrays, 2018b. URL <a href="https://CRAN.R-project.org/package=stars" class="uri">https://CRAN.R-project.org/package=stars</a>. R package version 0.2-0.</small></p></li>
+<li class="fragment"><p>Thank you!</p>
+<ul>
+<li class="fragment">Questions?</li>
+</ul></li>
+<li class="fragment"><p>Contact</p>
+<ul>
+<li class="fragment"><a href="mailto:pramitghosh@uni-muenster.de" class="email">pramitghosh@uni-muenster.de</a></li>
+<li class="fragment"><a href="https://ghosh.staff.ifgi.de/" class="uri">https://ghosh.staff.ifgi.de/</a></li>
+</ul></li>
+</ul></section>
+    </div>
+  </div>
+
+  <script src="index_files/reveal.js-3.3.0.1/lib/js/head.min.js"></script>
+  <script src="index_files/reveal.js-3.3.0.1/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Push each slide change to the browser history
+        history: true,
+        // Vertical centering of slides
+        center: false,
+        // Transition style
+        transition: 'zoom', // none/fade/slide/convex/concave/zoom
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'default', // none/fade/slide/convex/concave/zoom
+
+
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'index_files/reveal.js-3.3.0.1/plugin/zoom-js/zoom.js', async: true },
+        ]
+      });
+    </script>
+  <!-- dynamically load mathjax for compatibility with self-contained -->
+  <script>
+    (function () {
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+      document.getElementsByTagName("head")[0].appendChild(script);
+    })();
+  </script>
+
+<script>
+  (function() {
+    if (window.jQuery) {
+      Reveal.addEventListener( 'slidechanged', function(event) {  
+        window.jQuery(event.previousSlide).trigger('hidden');
+        window.jQuery(event.currentSlide).trigger('shown');
+      });
+    }
+  })();
+</script>
+
+
+  </body>
+</html>
