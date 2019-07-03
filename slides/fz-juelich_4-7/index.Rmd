@@ -19,10 +19,10 @@ knitr::opts_chunk$set(echo = TRUE)
 # Traditional EO data processing
 
 - Requires data to be present locally
-- Bottleneck for processing large data volumes
+- Bottlenecks for processing large data volumes
   - Bandwidth
   - Computing power
-- Cloud-based processing seems the most promising solution
+- Cloud-based processing seems to be the most promising solution
   - Moving code to data is easier than the other way around
 - openEO aims to develop a mediating API comprehendible to compliant back-ends and clients
 
@@ -52,7 +52,7 @@ Using `stars` (Pebesma, 2018)
 
 # Results
 
-- Implementation using base64-encoded strings offers faster results than other strategies for a variety of operations
+- Implementation using base64-encoded strings offers faster results than other strategies for a variety of commonly used operations
 <img class = "plain" src = "s3.png">
 <small>Experiments performed on 300px*300px subsets of Sentinel-2 time-series with 3 time-steps</small>
 
@@ -61,16 +61,16 @@ Using `stars` (Pebesma, 2018)
 - R coding style need not be adapted for execution in the cloud
   - Users do not need to change the code written for their local machine drastically
   - No distinction between client- and server-side objects (Gorelick et al., 2017)
-- Open source HTTP-based interface with language-agnostic open-source technologies
-  - No language-specific clients to interact with the back-end (e.g. JS, Python in GEE)
-  - Smooth learning curve for users
+- Open-source HTTP-based interface with language-agnostic open-source technologies
+  - Clients not bound by language to interact with the service (e.g. JS, Python in GEE)
+  - Gentle learning curve for users
 
 # Advantages over GEE: Functionality
 
 - Download, install and use external libraries (R packages) at run-time from CRAN, Github etc.
   - Users not limited to pre-defined functionality
 - Support for external data in a variety of formats
-  - Possible for users to send supplementary data to the web-service
+  - Possible for users to send supplementary data files to the UDF service
 - External processing support
   - Users can query external processing services (e.g. WPS) over the internet as a part of their UDFs
 

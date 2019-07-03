@@ -456,12 +456,12 @@ document.getElementsByTagName('head')[0].appendChild(style);
 
 <section id="traditional-eo-data-processing" class="title-slide slide level1"><h1>Traditional EO data processing</h1><ul>
 <li class="fragment">Requires data to be present locally</li>
-<li class="fragment">Bottleneck for processing large data volumes
+<li class="fragment">Bottlenecks for processing large data volumes
 <ul>
 <li class="fragment">Bandwidth</li>
 <li class="fragment">Computing power</li>
 </ul></li>
-<li class="fragment">Cloud-based processing seems the most promising solution
+<li class="fragment">Cloud-based processing seems to be the most promising solution
 <ul>
 <li class="fragment">Moving code to data is easier than the other way around</li>
 </ul></li>
@@ -489,7 +489,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <p>Using <code>stars</code> (Pebesma, 2018) <img class = "plain" src = "strategy_3.png" width = "75%"></p>
 </section></section>
 <section id="results" class="title-slide slide level1"><h1>Results</h1><ul>
-<li class="fragment">Implementation using base64-encoded strings offers faster results than other strategies for a variety of operations <img class = "plain" src = "s3.png"> <small>Experiments performed on 300px*300px subsets of Sentinel-2 time-series with 3 time-steps</small></li>
+<li class="fragment">Implementation using base64-encoded strings offers faster results than other strategies for a variety of commonly used operations <img class = "plain" src = "s3.png"> <small>Experiments performed on 300px*300px subsets of Sentinel-2 time-series with 3 time-steps</small></li>
 </ul></section>
 <section id="advantages-over-gee-usability" class="title-slide slide level1"><h1>Advantages over GEE: Usability</h1><ul>
 <li class="fragment">R coding style need not be adapted for execution in the cloud
@@ -497,10 +497,10 @@ document.getElementsByTagName('head')[0].appendChild(style);
 <li class="fragment">Users do not need to change the code written for their local machine drastically</li>
 <li class="fragment">No distinction between client- and server-side objects (Gorelick et al., 2017)</li>
 </ul></li>
-<li class="fragment">Open source HTTP-based interface with language-agnostic open-source technologies
+<li class="fragment">Open-source HTTP-based interface with language-agnostic open-source technologies
 <ul>
-<li class="fragment">No language-specific clients to interact with the back-end (e.g. JS, Python in GEE)</li>
-<li class="fragment">Smooth learning curve for users</li>
+<li class="fragment">Clients not bound by language to interact with the service (e.g. JS, Python in GEE)</li>
+<li class="fragment">Gentle learning curve for users</li>
 </ul></li>
 </ul></section>
 <section id="advantages-over-gee-functionality" class="title-slide slide level1"><h1>Advantages over GEE: Functionality</h1><ul>
@@ -510,7 +510,7 @@ document.getElementsByTagName('head')[0].appendChild(style);
 </ul></li>
 <li class="fragment">Support for external data in a variety of formats
 <ul>
-<li class="fragment">Possible for users to send supplementary data to the web-service</li>
+<li class="fragment">Possible for users to send supplementary data files to the UDF service</li>
 </ul></li>
 <li class="fragment">External processing support
 <ul>
