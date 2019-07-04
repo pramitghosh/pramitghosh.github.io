@@ -39,7 +39,7 @@ A UDF service allows users to run their own code instead of only those provided 
 
 # Overview of methodology
 
-- Prototypical R package `openEO.R.UDF`  (Ghosh and Lahn, 2019) exploring 3 strategies for an UDF service
+- Prototypical R package `openEO.R.UDF`  (Ghosh and Lahn, 2019) exploring 3 strategies for a UDF service
   - File-based service
   - RESTful service with EO data as JSON arrays
   - RESTful service with EO data as base64-encoded strings
