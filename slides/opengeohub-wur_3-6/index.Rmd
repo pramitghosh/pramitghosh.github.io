@@ -1,0 +1,53 @@
+---
+title: "Professional interests and outlook of"
+author: "Pramit Ghosh (pramitghosh@outlook.com), applicant for the PhD position in spatiotemporal data modelling"
+date: June 3, 2020
+output:
+  revealjs::revealjs_presentation:
+    incremental: true
+    theme: "night"
+    self_contained: false
+    reveal_plugins: ["zoom"]
+    progress: true
+    transition: "zoom"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Professional interests in the next few years
+
+- Train to be an independent researcher
+  - Develop skills in writing research proposals
+  - Formulate good research questions and plan how to proceed
+  - Be aware of pitfalls that lead to bad science
+  - Manage a research project and bring it to completion
+  - Gain experience in teaching and thesis supervision
+  - Learn to produce impactful scientific outputs
+
+## Personal achievements I am proud of
+
+- Still want an academic life even after not getting anything substantial for more than an year after passing my M.Sc.
+- A few students I taught in ifgi believed that my teaching helped them significantly
+
+## Other achievements that ~~I am proud of~~ brought me joy
+
+Criterion: I did not have the achievement in mind when I did the actual work
+
+-  Wrote (albeit **very badly**) my first journal article as the leading author soon after passing my B.Sc.
+    - perhaps the first attempt to review of the use of Cellular automata in spatial modelling
+    - well-received by the community with 50+ citations in 3 years (0 self-citations)
+- Invited to review for Journal of Hydrology a few times during my M.Sc.
+    - Happy to give back to the scientific community
+
+## Why I applied for this position?
+
+- I know some of the pre-requisite skills mentioned in the advertisement
+- web-GIS is somewhat related to my Master's thesis
+    - perhaps possible to build a link?
+- Might be a good opportunity to learn machine learning in the context of geodata
+- Has the potential to be a suitable place to spend the next few years of my life
+        
+## Thank you!
