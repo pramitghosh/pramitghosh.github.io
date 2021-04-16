@@ -1,1 +1,1 @@
-window.location.replace("http://ghosh.staff.ifgi.de");
+window.location.replace("https://ghosh.staff.ifgi.de");
